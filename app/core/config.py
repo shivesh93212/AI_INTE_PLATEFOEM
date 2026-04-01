@@ -9,7 +9,7 @@ class Settings:
 
     DATABASE_URL: str = os.getenv("DATABASE_URL")
 
-    CLERK_JWKS_URL:str = os.getenc("CLERK_JWKS_URL")
+    CLERK_JWKS_URL:str = os.getenv("CLERK_JWKS_URL")
 
     CLOUDINARY_CLOUD_NAME: str = os.getenv("CLOUDINARY_CLOUD_NAME")
     CLOUDINARY_API_KEY: str = os.getenv("CLOUDINARY_API_KEY")
@@ -17,4 +17,4 @@ class Settings:
 
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY")
 
-    Settings=Settings()
+    
