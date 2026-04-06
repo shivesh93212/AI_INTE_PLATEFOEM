@@ -18,5 +18,9 @@ class Interview(Base):
     answers=Column(JSON,nullable=True)
 
     status=Column(String,default="started")
+    
+    score = Column(Integer, nullable=True)
 
+    feedback = Column(JSON, nullable=True)
+    
     created_at=Column(DateTime,default=datetime.utcnow())

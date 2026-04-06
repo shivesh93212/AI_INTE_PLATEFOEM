@@ -20,7 +20,8 @@ class InterviewResponse(BaseModel):
     answers:Optional[List[str]]
     status:str
     created_at:datetime
-
+    score: Optional[int]
+    feedback: Optional[dict]
     class config:
         from_attributes=True
 

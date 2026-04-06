@@ -5,6 +5,8 @@ from app.db.session import get_db
 from app.services.interview_service import create_interview,submit_answer
 from app.services.user_service import get_or_create_user
 from app.schemas.interview import InterviewCreate,AnswerInput,InterviewResponse
+from backend.app.models.interview import Interview
+from app.services.interview_service import submit_and_evaluate
 
 router=APIRouter()
 
@@ -29,21 +31,24 @@ async def start_interview(
     )
     return interview
 
-@router.post("/{interview_id}/submit",response_model=InterviewResponse)
+
+
+@router.post("/{interview_id}/submit", response_model=InterviewResponse)
 async def submit_interview(
-    interview_id:int,
-    data:AnswerInput,
+    interview_id: int,
+    data: AnswerInput,
     current_user=Depends(get_current_user),
-    db:Session=Depends(get_db)
+    db: Session = Depends(get_db)
 ):
-    interview=submit_answer(
-        db,
-        interview_id,
-        answer=data.answers
-    )
-    
+    interview = db.query(Interview).filter(Interview.id == interview_id).first()
+
     if not interview:
-        raise HTTPException(status_code=404,detail="Interview not found")
-    
+        raise HTTPException(status_code=404, detail="Interview not found")
+
+    interview = await submit_and_evaluate(
+        db,
+        interview,
+        data.answers
+    )
 
     return interview
