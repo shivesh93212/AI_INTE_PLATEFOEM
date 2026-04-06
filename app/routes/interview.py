@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Depends
+from fastapi import APIRouter,Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.deps.auth import get_current_user
 from app.db.session import get_db
@@ -27,4 +27,23 @@ async def start_interview(
         questions=[q.dict() for q in data.questions]
 
     )
+    return interview
+
+@router.post("/{interview_id}/submit",response_model=InterviewResponse)
+async def submit_interview(
+    interview_id:int,
+    data:AnswerInput,
+    current_user=Depends(get_current_user),
+    db:Session=Depends(get_db)
+):
+    interview=submit_answer(
+        db,
+        interview_id,
+        answer=data.answers
+    )
+    
+    if not interview:
+        raise HTTPException(status_code=404,detail="Interview not found")
+    
+
     return interview

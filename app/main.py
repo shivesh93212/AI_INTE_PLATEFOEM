@@ -7,11 +7,13 @@ app=FastAPI()
 from app.models import user
 from app.routes import upload,user
 from app.routes import ai
+from app.routes import interview
+
 
 app.include_router(user.router,prefix="/user",tags=["User"])
 app.include_router(upload.router,prefix="/upload",tags=["Upload"])
 app.include_router(ai.router,prefix="/ai",tags=["AI"])
-
+app.include_router(interview.router,prefix="/interview",tags=["Interview"])
 
 Base.metadata.create_all(bind=engine)
 
